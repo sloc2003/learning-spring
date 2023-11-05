@@ -1,37 +1,29 @@
 package com.basikprogs.learningspring.util;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import com.basikprogs.learningspring.data.Guest;
-import com.basikprogs.learningspring.data.GuestRepo;
-import com.basikprogs.learningspring.data.Reservation;
-import com.basikprogs.learningspring.data.ReservationRepo;
-import com.basikprogs.learningspring.data.Room;
-import com.basikprogs.learningspring.data.RoomRepo;
+import com.basikprogs.learningspring.business.ReservationService;
+import com.basikprogs.learningspring.business.RoomReservation;
 
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class AppStartupEvent implements ApplicationListener<ApplicationReadyEvent>{
-
-    private final RoomRepo  roomRepo;
-    private final GuestRepo guestRepo;
-    private final ReservationRepo reservationRepo;
+    private final ReservationService reservationService;
+    private final DateUtils dateUtils;
 
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        Iterable<Room> rooms = this.roomRepo.findAll();
-        rooms.forEach(System.out::println);
-
-        Iterable<Guest> guests = this.guestRepo.findAll();
-        guests.forEach(System.out::println);
-
-        Iterable<Reservation> reservations = this.reservationRepo.findAll();
-        reservations.forEach(System.out::println);
+        Date date = this.dateUtils.createDateFromDateString("2022-01-01");
+        List<RoomReservation> resrvations = this.reservationService.getRoomReservationsForDate(date);
+        resrvations.forEach(System.out::println);
     }
     
 }
