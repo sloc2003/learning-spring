@@ -74,4 +74,15 @@ public class ReservationService {
         return guests;
     }
 
+    public void addHotelGuest(Guest guest) {
+        if (guest == null) {
+            throw new RuntimeException("Guest cannot be null");
+        }
+        this.guestRepo.save(guest);
+    }
+
+    public List<Room> getHotelRooms() {
+        return this.roomRepo.findAll();
+    }
+
 }
